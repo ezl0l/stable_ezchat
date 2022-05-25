@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ezlol.mesh.stableezchat.R;
 import com.ezlol.mesh.stableezchat.Utils;
 import com.ezlol.mesh.stableezchat.api.API;
+import com.ezlol.mesh.stableezchat.asynctask.ChatInfoTask;
 import com.ezlol.mesh.stableezchat.asynctask.ChatMessagesTask;
 import com.ezlol.mesh.stableezchat.asynctask.SendMessageTask;
 import com.ezlol.mesh.stableezchat.model.AccessToken;
@@ -34,6 +36,8 @@ public class DialogFragment extends Fragment implements View.OnClickListener, Ga
     private LinearLayout uploadFileBottomSheet;
     private BottomSheetBehavior<LinearLayout> uploadFileBottomSheetBehavior;
     private RecyclerView uploadFileBottomSheetRecyclerView;
+
+    private TextView toolbarDialogTitle;
 
     private API api;
     private int chatId;
@@ -55,6 +59,7 @@ public class DialogFragment extends Fragment implements View.OnClickListener, Ga
         messageEditText = v.findViewById(R.id.messageEditText);
         sendMessageButton = v.findViewById(R.id.sendMessageButton);
         toolbarBackButton = v.findViewById(R.id.toolbar_back);
+        toolbarDialogTitle = v.findViewById(R.id.toolbar_dialog_name);
 
         uploadFileBottomSheet = v.findViewById(R.id.upload_file_bottom_sheet);
         uploadFileBottomSheetBehavior = BottomSheetBehavior.from(uploadFileBottomSheet);
@@ -72,8 +77,18 @@ public class DialogFragment extends Fragment implements View.OnClickListener, Ga
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(chatId == 0)
+            return;
+        new ChatInfoTask(this, api, chatId).execute();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
+        if(chatId == 0)
+            return;
         new ChatMessagesTask(this, api, chatId).execute();
     }
 

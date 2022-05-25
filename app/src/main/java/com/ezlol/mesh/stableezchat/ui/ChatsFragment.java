@@ -12,14 +12,16 @@ import androidx.fragment.app.Fragment;
 import com.ezlol.mesh.stableezchat.R;
 import com.ezlol.mesh.stableezchat.api.API;
 import com.ezlol.mesh.stableezchat.asynctask.ChatsTask;
+import com.ezlol.mesh.stableezchat.asynctask.OnChatClickListener;
 import com.ezlol.mesh.stableezchat.model.AccessToken;
 import com.ezlol.mesh.stableezchat.model.Chat;
 import com.google.gson.Gson;
 
-public class ChatsFragment extends Fragment implements ChatsTask.OnChatClickListener {
+public class ChatsFragment extends Fragment implements OnChatClickListener, View.OnClickListener {
     private API api;
 
-    protected ChatsTask.OnChatClickListener onChatClickListener;
+    protected OnChatClickListener onChatClickListener;
+    protected OnToolbarClickListener onToolbarClickListener;
 
     @Nullable
     @Override
@@ -30,11 +32,22 @@ public class ChatsFragment extends Fragment implements ChatsTask.OnChatClickList
 
         api = new API(new Gson().fromJson(bundle.getString("accessToken"), AccessToken.class));
 
+        View v = inflater.inflate(R.layout.fragment_chats, container, false);
+
+        View toolbarUserSearchButton = v.findViewById(R.id.userSearchToolbarButton);
+        toolbarUserSearchButton.setOnClickListener(this);
+
         ChatsTask chatsTask = new ChatsTask(this, api);
         chatsTask.setOnChatClickListener(this);
         chatsTask.execute();
 
-        return inflater.inflate(R.layout.fragment_chats, container, false);
+        return v;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.userSearchToolbarButton && onToolbarClickListener != null)
+            onToolbarClickListener.onUserSearchButtonClick(view);
     }
 
     @Override
@@ -43,7 +56,11 @@ public class ChatsFragment extends Fragment implements ChatsTask.OnChatClickList
             onChatClickListener.onChatClick(chat, view);
     }
 
-    public void setOnChatClickListener(ChatsTask.OnChatClickListener onChatClickListener) {
+    public void setOnChatClickListener(OnChatClickListener onChatClickListener) {
         this.onChatClickListener = onChatClickListener;
+    }
+
+    public void setOnToolbarClickListener(OnToolbarClickListener onToolbarClickListener) {
+        this.onToolbarClickListener = onToolbarClickListener;
     }
 }

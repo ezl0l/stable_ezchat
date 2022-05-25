@@ -12,10 +12,6 @@ import com.ezlol.mesh.stableezchat.model.Chat;
 
 
 public class ChatsTask extends APIAndUITask<Chat[]> {
-    public interface OnChatClickListener {
-        void onChatClick(Chat chat, View view);
-    }
-
     protected OnChatClickListener onChatClickListener;
 
     public ChatsTask(Fragment fragment, API api) {

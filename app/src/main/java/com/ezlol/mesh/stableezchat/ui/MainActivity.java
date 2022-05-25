@@ -13,17 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.ezlol.mesh.stableezchat.R;
-import com.ezlol.mesh.stableezchat.asynctask.ChatsTask;
+import com.ezlol.mesh.stableezchat.asynctask.OnChatClickListener;
+import com.ezlol.mesh.stableezchat.asynctask.UserSearchTask;
 import com.ezlol.mesh.stableezchat.model.Chat;
-import com.ezlol.mesh.stableezchat.ui.ChatsFragment;
-import com.ezlol.mesh.stableezchat.ui.DialogFragment;
-import com.ezlol.mesh.stableezchat.ui.FragmentHelper;
-import com.ezlol.mesh.stableezchat.ui.LoginFragment;
+import com.ezlol.mesh.stableezchat.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener,
-        LoginFragment.OnLoginSuccessListener, ChatsTask.OnChatClickListener {
+        LoginFragment.OnLoginSuccessListener, OnChatClickListener, OnToolbarClickListener {
     public static final int REQUEST_PERMISSIONS = 101;
 
     private ChatsFragment chatsFragment;
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     private void init() {
         String accessTokenJson = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString("accessToken", null);
-        if(accessTokenJson == null){
+        if(accessTokenJson == null) {
             LoginFragment loginFragment = new LoginFragment();
             loginFragment.setOnLoginSuccessListener(this);
             getSupportFragmentManager().beginTransaction()
@@ -75,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
         chatsFragment = (ChatsFragment) FragmentHelper.createInstance(new ChatsFragment(), this);
         chatsFragment.setOnChatClickListener(this);
+        chatsFragment.setOnToolbarClickListener(this);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, chatsFragment)
@@ -116,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     @Override
     public void onChatClick(Chat chat, View view) {
         bottomNavigationView.setVisibility(View.GONE);
+        if(chat.id == null)
+            chat.id = 0;
 
         DialogFragment dialogFragment = new DialogFragment();
 
@@ -128,6 +129,16 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, dialogFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onUserSearchButtonClick(View view) {
+        UserSearchFragment userSearchFragment = new UserSearchFragment();
+        userSearchFragment.setOnChatClickListener(this);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, FragmentHelper.createInstance(userSearchFragment, this))
                 .addToBackStack(null)
                 .commit();
     }

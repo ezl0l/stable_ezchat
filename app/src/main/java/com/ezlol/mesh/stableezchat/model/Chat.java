@@ -22,10 +22,10 @@ public class Chat {
     public User[] members;
     public Message last_message;
 
-    public Chat(Integer id, String status, String name, Integer time, User[] members, Message last_message) {
+    public Chat(Integer id, String status, String title, Integer time, User[] members, Message last_message) {
         this.id = id;
         this.status = status;
-        this.title = name;
+        this.title = title;
         this.time = time;
         this.members = members;
         this.last_message = last_message;
