@@ -1,0 +1,28 @@
+<resources>
+    <dimen name="chatLayoutMarginBottom">5dp</dimen>
+    <dimen name="chatCardViewRadius">32dp</dimen>
+    <dimen name="chatCardViewElevation">10dp</dimen>
+    <dimen name="chatAvatarSize">64dp</dimen>
+    <dimen name="chatInfoLayoutMargin">5dp</dimen>
+    <dimen name="chatLastMessageLayoutMargin">5dp</dimen>
+    <dimen name="messageLayoutMarginTop">10dp</dimen>
+    <dimen name="messageContentMarginTop">10dp</dimen>
+    <dimen name="messageContentPadding">12dp</dimen>
+    <dimen name="messageCornersSize">30dp</dimen>
+    <dimen name="messageCornersMarginTop">6.5dp</dimen>
+    <dimen name="messageCornersMarginLeft">-15dp</dimen>
+    <dimen name="messageAvatarSize">30dp</dimen>
+    <dimen name="messageTimeTextSize">11sp</dimen>
+    <dimen name="messageTimeTextMarginBottom">2dp</dimen>
+    <dimen name="messageTimeTextMarginRight">5dp</dimen>
+    <dimen name="imageSize">150dp</dimen>
+    <dimen name="pinnedImageWidth">120dp</dimen>
+    <dimen name="pinnedImageHeight">80dp</dimen>
+    <dimen name="pinnedImageRightPadding">5dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>
